@@ -14,12 +14,13 @@ pipeline {
     stage('Generate doc') {
       steps {
         sh 'doxygen'
+        sh 'tar -cf doc.tgz doc/'
       }
     }
   }
   post {
     always {
-        archiveArtifacts artifacts: 'doc/html/*', fingerprint: false
+        archiveArtifacts artifacts: 'doc.tgz', fingerprint: false
         archiveArtifacts artifacts: 'test/nosetests.xml', fingerprint: true
         junit skipPublishingChecks: true, testResults: 'test/nosetests.xml'
     }
